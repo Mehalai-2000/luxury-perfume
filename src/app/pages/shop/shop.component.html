@@ -1,0 +1,218 @@
+<!-- SEO Meta handled in index.html; semantic heading structure maintained here -->
+<div class="shop-page">
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="shop-hero" aria-label="Shop hero">
+    <div class="shop-hero-bg"></div>
+    <div class="shop-hero-particles">
+      <span class="particle p1"></span>
+      <span class="particle p2"></span>
+      <span class="particle p3"></span>
+      <span class="particle p4"></span>
+      <span class="particle p5"></span>
+    </div>
+    <div class="shop-hero-content">
+      <span class="shop-hero-tag">✦ THE COLLECTION ✦</span>
+      <div class="shop-hero-line"></div>
+      <h1 class="shop-hero-title">THE BOUTIQUE</h1>
+      <p class="shop-hero-subtitle">Each fragrance is a story waiting to be worn</p>
+    </div>
+    <div class="shop-hero-scroll-hint">
+      <span>DISCOVER</span>
+      <div class="scroll-line">
+        <div class="scroll-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTER BAR ===== -->
+  <section class="filter-section" aria-label="Product filters">
+    <div class="filter-bar">
+      <button *ngFor="let f of filters" class="filter-btn" [class.active]="activeFilter === f" (click)="setFilter(f)"
+        [id]="'filter-' + f">
+        {{ f | uppercase }}
+      </button>
+    </div>
+    <div class="filter-divider"></div>
+  </section>
+
+  <!-- ===== PRODUCT GRID ===== -->
+  <section class="products-section" aria-label="Product listing">
+    <div class="products-carousel-container" *ngIf="filteredProducts.length > 0">
+
+      <!-- Premium Glassmorphic Left Arrow Button -->
+      <button class="carousel-arrow prev" [class.disabled]="startIndex === 0" [disabled]="startIndex === 0"
+        (click)="slidePrev()" aria-label="Previous fragrances">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          class="arrow-svg">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- Viewport covering the dynamic sliding track -->
+      <div class="products-carousel-viewport">
+        <div class="products-track" [style.transform]="trackTransform">
+
+          <article *ngFor="let product of filteredProducts" class="product-card"
+            [class.added]="addedToCartId === product.id" [attr.id]="'product-' + product.id"
+            (mouseenter)="hoveredId = product.id" (mouseleave)="hoveredId = null">
+
+            <!-- Badge -->
+            <div class="product-badge" *ngIf="product.badge">{{ product.badge }}</div>
+
+            <!-- Image Area -->
+            <div class="product-image-wrap">
+              <div class="product-image-glow"></div>
+
+              <!-- Floating Glassmorphic Wishlist Heart Button -->
+              <button class="wishlist-btn" [class.active]="product.inWishlist" (click)="toggleWishlist(product, $event)"
+                [attr.aria-label]="(product.inWishlist ? 'Remove from ' : 'Add to ') + product.name + ' wishlist'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5" class="heart-icon">
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                  </path>
+                </svg>
+              </button>
+
+              <img [src]="product.image" [alt]="product.name + ' luxury perfume'" class="product-image"
+                loading="lazy" />
+              <!-- Hover overlay with quick-add -->
+              <div class="product-overlay">
+                <div class="overlay-notes">
+                  <span class="notes-label">TOP NOTES</span>
+                  <div class="notes-list">
+                    <span class="note-chip" *ngFor="let note of product.notes | slice:0:3">{{ note }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+              <div class="product-meta">
+                <span class="product-category">{{ product.category | uppercase }}</span>
+                <span class="product-size">{{ product.size }}</span>
+              </div>
+              <h2 class="product-name">{{ product.name }}</h2>
+              <p class="product-subtitle">{{ product.subtitle }}</p>
+              <p class="product-description">{{ product.description }}</p>
+
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-currency">$</span>
+                  <span class="price-amount">{{ product.price }}</span>
+                </div>
+                <button class="add-to-cart-btn" [class.in-cart]="addedToCartId === product.id"
+                  (click)="addToCart(product, $event)" [attr.id]="'add-to-cart-' + product.id"
+                  [attr.aria-label]="'Add ' + product.name + ' to cart'">
+                  <span class="btn-label" *ngIf="addedToCartId !== product.id">ADD TO CART</span>
+                  <span class="btn-label added-label" *ngIf="addedToCartId === product.id">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="check-icon">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    ADDED
+                  </span>
+                  <span class="btn-glow-effect"></span>
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Premium Glassmorphic Right Arrow Button -->
+      <button class="carousel-arrow next" [class.disabled]="startIndex >= maxStartIndex"
+        [disabled]="startIndex >= maxStartIndex" (click)="slideNext()" aria-label="Next fragrances">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          class="arrow-svg">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredProducts.length === 0">
+      <span class="empty-icon">✦</span>
+      <p>No fragrances in this category yet.</p>
+    </div>
+  </section>
+
+  <!-- ===== FLOATING CART ICON ===== -->
+  <button class="floating-cart" id="floatingCartBtn" (click)="toggleCart()" [class.has-items]="cartCount > 0"
+    aria-label="Open cart">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      class="cart-svg">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <path d="M16 10a4 4 0 0 1-8 0"></path>
+    </svg>
+    <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
+  </button>
+
+  <!-- ===== CART DRAWER ===== -->
+  <div class="cart-overlay" [class.open]="cartVisible" (click)="toggleCart()"></div>
+  <aside class="cart-drawer" [class.open]="cartVisible" aria-label="Shopping cart">
+    <div class="cart-header">
+      <h2 class="cart-title">YOUR SELECTION</h2>
+      <button class="cart-close" id="cartCloseBtn" (click)="toggleCart()">✕</button>
+    </div>
+    <div class="cart-divider"></div>
+
+    <div class="cart-empty" *ngIf="cartItems.length === 0">
+      <span class="cart-empty-icon">✦</span>
+      <p>Your collection is empty.<br />Begin your olfactory journey.</p>
+    </div>
+
+    <div class="cart-items-list" *ngIf="cartItems.length > 0">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <img [src]="item.image" [alt]="item.name" class="cart-item-img" />
+        <div class="cart-item-info">
+          <span class="cart-item-name">{{ item.name }}</span>
+          <span class="cart-item-sub">{{ item.subtitle }} · {{ item.size }}</span>
+          <span class="cart-item-qty">Qty: {{ item.quantity }}</span>
+        </div>
+        <div class="cart-item-right">
+          <span class="cart-item-price">${{ item.price * item.quantity }}</span>
+          <button class="cart-item-remove" (click)="removeFromCart(item)"
+            [attr.aria-label]="'Remove ' + item.name">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer" *ngIf="cartItems.length > 0">
+      <div class="cart-divider"></div>
+      <div class="cart-total-row">
+        <span class="cart-total-label">TOTAL</span>
+        <span class="cart-total-amount">${{ cartTotal }}</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">
+        <span>PROCEED TO CHECKOUT</span>
+        <span class="checkout-btn-glow"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== STANDALONE ABOUT US COMPONENT ===== -->
+  <app-about></app-about>
+
+  <!-- ===== STANDALONE CINEMATIC FAQ COMPONENT ===== -->
+  <app-faq></app-faq>
+
+  <!-- ===== STANDALONE CONTACT COMPONENT ===== -->
+  <app-contact></app-contact>
+
+  <!-- ===== LUXURY FOOTER STRIP ===== -->
+  <footer class="shop-footer" aria-label="Footer">
+    <div class="footer-ornament">✦</div>
+    <p class="footer-tagline">MYSTIQUE AROMA · EST. MMXXV · MAISON DE PARFUM</p>
+    <div class="footer-ornament">✦</div>
+  </footer>
+
+  <!-- Full-screen black exit curtain for scroll-back transition -->
+  <div class="shop-exit-curtain" aria-hidden="true"></div>
+
+</div>

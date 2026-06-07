@@ -1,0 +1,761 @@
+// Cinematic Luxury Brand Text Styling
+// Theme: Deep rich black (#050403) with glowing orange/amber accents
+
+.scroll-container {
+  width: 100%;
+  height: 100vh; // Constrained since first animation is fully automatic on load
+  background-color: #050505;
+  position: relative;
+  overflow: hidden;
+}
+
+.cinematic-viewport {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+// ----------------------------------------------------
+// 1. BACKGROUND LAYERS (Glows, Canvas particles)
+// ----------------------------------------------------
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  .bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #050505 0%, #15110d 35%, #221a14 70%, #060606 100%);
+  }
+
+  .ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+    width: 90vw;
+    height: 90vw;
+    max-width: 900px;
+    max-height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(223, 193, 147, 0.16) 0%, rgba(223, 193, 147, 0.03) 50%, rgba(0, 0, 0, 0) 70%);
+    filter: blur(80px);
+    opacity: 0; // Controlled by GSAP
+    will-change: transform, opacity;
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    will-change: transform, opacity;
+    z-index: 1;
+  }
+
+  .glow-orb-1 {
+    top: 20%;
+    left: 15%;
+    width: 45vw;
+    height: 45vw;
+    max-width: 450px;
+    max-height: 450px;
+    background: radial-gradient(circle, rgba(223, 193, 147, 0.12) 0%, transparent 70%);
+  }
+
+  .glow-orb-2 {
+    bottom: 20%;
+    right: 15%;
+    width: 50vw;
+    height: 50vw;
+    max-width: 500px;
+    max-height: 500px;
+    background: radial-gradient(circle, rgba(184, 144, 96, 0.08) 0%, transparent 70%);
+  }
+
+  .smoke-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 50% 50%, rgba(223, 193, 147, 0.04), transparent 60%);
+    opacity: 0; // Controlled by GSAP
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: opacity;
+  }
+}
+
+// ----------------------------------------------------
+// 2. LUXURY TYPOGRAPHY
+// ----------------------------------------------------
+.title-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+  width: 100%;
+  text-align: center;
+}
+
+.luxury-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.6em; // Wide luxury spacing
+  background: linear-gradient(90deg, #dfc193, #f5e3cc, #b89060, #dfc193);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  margin-bottom: 25px;
+  opacity: 0; // Controlled by GSAP
+  filter: blur(15px);
+  transform: scale(0.8);
+  will-change: transform, opacity, filter, letter-spacing;
+  animation: shineGold 8s linear infinite;
+
+  @media (max-width: 768px) {
+    font-size: 0.65rem;
+    letter-spacing: 0.45em;
+    margin-bottom: 12px;
+  }
+}
+
+.luxury-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13vw;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; // Starting compressed space
+  background: linear-gradient(90deg, #ffffff 0%, #f5e3cc 35%, #dfc193 70%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  opacity: 0; // Initial state for GSAP
+  filter: blur(25px); // Initial state for GSAP
+  transform: scale(0.1); // Initial state for GSAP
+  line-height: 1;
+  white-space: nowrap; // CRITICAL: Blocks text from ever wrapping onto multiple lines!
+  animation: shineGold 12s linear infinite;
+  will-change: transform, opacity, filter, letter-spacing;
+
+  @media (min-width: 1600px) {
+    font-size: 11rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14vw;
+    letter-spacing: 0.03em;
+  }
+}
+
+@keyframes shineGold {
+  to {
+    background-position: 200% center;
+  }
+}
+
+// ----------------------------------------------------
+// 3. LUXURIOUS PRODUCT DISPLAY (Uncut Natural Bottle)
+// ----------------------------------------------------
+.bottle-container {
+  position: absolute;
+  top: 50%; // Centered vertically in cinematic viewport for opening animation
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6; // Placed on top of background glows but behind scroll indicators
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  opacity: 0; // Initial state for GSAP
+  filter: blur(15px); // Initial state for GSAP
+  will-change: transform, opacity, filter;
+  // NOTE: No overflow:hidden here — the lid floats ABOVE the container during the opening animation!
+
+  @media (max-width: 768px) {
+    max-width: 380px;
+    top: 50%; // Centered vertically on mobile too to maximize screen visibility
+  }
+}
+
+.perfume-bottle {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 25px 60px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 45px rgba(223, 193, 147, 0.12));
+  will-change: transform, opacity;
+}
+
+// Background image that zooms in behind the bottle when it settles on the right
+.bottle-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; // Exactly matches the container — no overflow, no clipping needed
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0; // Controlled by GSAP
+  z-index: 0; // Behind all bottle layers and effects
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.closed-bottle {
+  position: relative;
+  z-index: 3;
+}
+
+.bottle-body {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.bottle-lid {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transform-origin: bottom center;
+}
+
+.revealed-brand-wrap {
+  position: absolute;
+  top: 25.4%; // Math-verified perfect center of the opened neck gap (between body top 44.5% and lifted lid bottom 6.4%)
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 4; // Rendered in front of body and lid layers to prevent clipping or overlapping
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  opacity: 0; // Controlled by GSAP
+  will-change: transform, opacity, filter;
+}
+
+.revealed-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.52em; // Wide letter spacing
+  color: #dfc193; // Satin gold color
+  text-shadow: 0 0 10px rgba(223, 193, 147, 0.4);
+}
+
+.revealed-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.3rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4),
+    0 0 30px rgba(223, 193, 147, 0.15);
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 1.55rem;
+    letter-spacing: 0.18em;
+  }
+}
+
+// ----------------------------------------------------
+// 4. SCROLL-TO-SHOP HINT (Fades in after intro is complete)
+// ----------------------------------------------------
+.scroll-to-shop-hint {
+  position: absolute;
+  bottom: 4.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0; // Controlled by GSAP — appears at 8.5s
+  will-change: opacity, transform;
+
+  .scroll-hint-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: rgba(223, 193, 147, 0.55);
+    white-space: nowrap;
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 38px;
+    background: rgba(223, 193, 147, 0.15);
+    position: relative;
+    overflow: hidden;
+
+    .scroll-hint-dot {
+      width: 1px;
+      height: 14px;
+      background: #dfc193;
+      position: absolute;
+      top: -14px;
+      animation: hintScrollDown 1.8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+    }
+  }
+
+  .scroll-hint-arrow {
+    font-size: 0.75rem;
+    color: rgba(223, 193, 147, 0.45);
+    animation: hintArrowBounce 1.8s ease-in-out infinite;
+    line-height: 1;
+  }
+}
+
+@keyframes hintScrollDown {
+  0%   { top: -14px; }
+  100% { top: 38px; }
+}
+
+@keyframes hintArrowBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.45; }
+  50%       { transform: translateY(5px); opacity: 0.9; }
+}
+
+// Full-screen black curtain used by GSAP for cinematic page exit transition
+.page-exit-curtain {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 9999;
+  opacity: 0;           // GSAP animates this to 1 during exit
+  pointer-events: none; // Transparent to mouse until transition fires
+  will-change: opacity;
+}
+
+
+// ----------------------------------------------------
+// 4b. LUXURY BOTTLE EFFECTS – Smoke, Spotlight & Glow
+// ----------------------------------------------------
+.bottle-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; // Behind the bottle images (z-index 3)
+  opacity: 0; // Controlled by GSAP — revealed after bottle settles on right
+  will-change: opacity;
+}
+
+// --- Cinematic Spotlight Light Cone (from above, like a stage light) ---
+.light-cone {
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180%;
+  height: 120%;
+  background: conic-gradient(from 270deg at 50% 0%,
+      transparent 0deg,
+      rgba(253, 235, 195, 0.04) 18deg,
+      rgba(253, 235, 195, 0.12) 26deg,
+      rgba(253, 235, 195, 0.04) 34deg,
+      transparent 52deg);
+  filter: blur(12px);
+  animation: lightPulse 5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+// --- Glowing Ambient Halo Ring around the bottle body ---
+.bottle-halo {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 50%;
+  background: radial-gradient(ellipse at center,
+      rgba(223, 193, 147, 0.14) 0%,
+      rgba(223, 193, 147, 0.06) 40%,
+      transparent 72%);
+  filter: blur(22px);
+  animation: haloBreath 4s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+// --- Glowing Base Pedestal — mirrors the bottle onto a reflective surface ---
+.bottle-base-glow {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 65%;
+  height: 28px;
+  background: radial-gradient(ellipse at center,
+      rgba(223, 193, 147, 0.55) 0%,
+      rgba(223, 193, 147, 0.2) 45%,
+      transparent 75%);
+  filter: blur(14px);
+  border-radius: 50%;
+  animation: baseGlowPulse 3.5s ease-in-out infinite;
+}
+
+// --- Organic rising smoke wisps ---
+.smoke-wisp {
+  position: absolute;
+  bottom: 10%;
+  border-radius: 50% 50% 30% 30%;
+  background: radial-gradient(ellipse at center,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(223, 193, 147, 0.07) 40%,
+      transparent 75%);
+  filter: blur(18px);
+  animation: smokeRise var(--smoke-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--smoke-delay, 0s);
+  transform-origin: bottom center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.smoke-wisp-1 {
+  --smoke-duration: 7s;
+  --smoke-delay: 0s;
+  width: 45%;
+  height: 50%;
+  left: 27%;
+}
+
+.smoke-wisp-2 {
+  --smoke-duration: 8.5s;
+  --smoke-delay: 1.4s;
+  width: 35%;
+  height: 40%;
+  left: 38%;
+}
+
+.smoke-wisp-3 {
+  --smoke-duration: 6.5s;
+  --smoke-delay: 2.8s;
+  width: 28%;
+  height: 35%;
+  left: 18%;
+}
+
+.smoke-wisp-4 {
+  --smoke-duration: 9s;
+  --smoke-delay: 0.8s;
+  width: 30%;
+  height: 38%;
+  left: 52%;
+}
+
+.smoke-wisp-5 {
+  --smoke-duration: 7.5s;
+  --smoke-delay: 3.5s;
+  width: 22%;
+  height: 30%;
+  left: 62%;
+}
+
+// --- Keyframe Animations ---
+@keyframes smokeRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scaleX(0.8);
+  }
+
+  20% {
+    opacity: 0.75;
+  }
+
+  60% {
+    opacity: 0.4;
+    transform: translateY(-55%) scaleX(1.3);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-100%) scaleX(1.6);
+  }
+}
+
+@keyframes lightPulse {
+
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: translateX(-50%) scaleX(1.0);
+  }
+
+  50% {
+    opacity: 1.0;
+    transform: translateX(-50%) scaleX(1.06);
+  }
+}
+
+@keyframes haloBreath {
+
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(1.0);
+  }
+
+  50% {
+    opacity: 1.0;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes baseGlowPulse {
+
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scaleX(1.0);
+  }
+
+  50% {
+    opacity: 1.0;
+    transform: translateX(-50%) scaleX(1.15);
+  }
+}
+
+// ----------------------------------------------------
+// 5. LEFT-SIDE LUXURY HERO CONTENT (Dior & Tom Ford Inspired)
+// ----------------------------------------------------
+.left-hero-content {
+  position: absolute;
+  left: 6vw; // Shifted further left to avoid overlapping the bottle and background image
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 650px; // Slightly reduced to prevent wide text overlap
+  pointer-events: auto; // MUST allow button clicking!
+  opacity: 0; // Controlled by GSAP
+  will-change: transform, opacity;
+
+  @media (max-width: 1200px) {
+    left: 4vw;
+    max-width: 520px;
+  }
+
+  @media (max-width: 1024px) {
+    left: 3vw;
+    max-width: 440px;
+  }
+
+  @media (max-width: 768px) {
+    left: 50%;
+    top: 78%;
+    transform: translate(-50%, -50%);
+    max-width: 380px;
+  }
+}
+
+.hero-pre-title,
+.hero-post-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem; // Scaled up from 0.85rem
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.65em; // Widened spacing for premium look
+  color: #ffffff; // Premium white
+  display: block;
+  opacity: 0; // Controlled by GSAP
+  will-change: transform, opacity, filter;
+  text-shadow: 0 0 12px rgba(223, 193, 147, 0.25);
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    letter-spacing: 0.5em;
+  }
+}
+
+.hero-pre-title {
+  margin-bottom: 18px; // Increased vertical rhythm
+}
+
+.hero-post-title {
+  margin-top: 18px; // Increased vertical rhythm
+  margin-bottom: 48px; // Creates elegant spacing before the Shop Now button
+
+  @media (max-width: 768px) {
+    margin-top: 12px;
+    margin-bottom: 28px;
+  }
+}
+
+.hero-main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9.2rem; // Scaled up from 6.8rem to beautifully cover the screen!
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0;
+  padding: 0 0 0 0.14em; // Offsets letter-spacing on the right to keep it perfectly centered!
+  line-height: 0.92;
+  background: linear-gradient(135deg, #ffffff 0%, #f5e3cc 30%, #dfc193 65%, #b89060 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shineGold 10s linear infinite;
+  display: inline-block;
+  opacity: 0; // Controlled by GSAP
+  will-change: transform, opacity, filter;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 45px rgba(223, 193, 147, 0.25));
+
+  @media (min-width: 1600px) {
+    font-size: 10.5rem; // Breathtaking editorial screen-covering sizing on wide displays
+  }
+
+  @media (max-width: 1200px) {
+    font-size: 7.8rem;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 6.4rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 4.6rem;
+    letter-spacing: 0.1em;
+    padding-left: 0.1em;
+  }
+
+  // Ultra-stylish, custom high-fashion editorial 'R' style
+  .stylish-r {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    display: inline-block;
+    transform: scale(1.16) translateY(2px);
+    margin-right: -0.06em; // Kerning offset to blend beautifully with 'O'
+    margin-left: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #fcf3e8 25%, #e8cb9e 65%, #c89e65 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(223, 193, 147, 0.4));
+  }
+}
+
+.hero-btn {
+  position: relative;
+  background: rgba(223, 193, 147, 0.03);
+  border: 1px solid rgba(223, 193, 147, 0.28);
+  padding: 16px 42px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0; // Pure premium minimal squared button
+  opacity: 0; // Controlled by GSAP
+  will-change: transform, opacity;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  text-decoration: none; // Handles anchor tag usage
+
+  @media (max-width: 768px) {
+    padding: 12px 32px;
+  }
+
+  &:hover {
+    border-color: #dfc193;
+    background: rgba(223, 193, 147, 0.09);
+    box-shadow: 0 0 25px rgba(223, 193, 147, 0.25),
+      inset 0 0 10px rgba(223, 193, 147, 0.1);
+    transform: translateY(-2px);
+
+    .btn-glow {
+      transform: translate(-50%, -50%) scale(1.8);
+      opacity: 0.25;
+    }
+
+    .btn-text {
+      color: #ffffff;
+      letter-spacing: 0.45em;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .btn-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #ffffff; // Crisp premium white
+    text-transform: uppercase;
+    letter-spacing: 0.38em;
+    padding-left: 0.38em; // Centers the spaced out text
+    position: relative;
+    z-index: 2;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    @media (max-width: 768px) {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      padding-left: 0.3em;
+    }
+  }
+
+  .btn-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(223, 193, 147, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+}

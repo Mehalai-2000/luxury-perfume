@@ -1,0 +1,80 @@
+<div class="scroll-container">
+  <!-- Pinned cinematic viewport covering full screen -->
+  <div class="cinematic-viewport">
+
+
+
+    <!-- Ambient background luxury layers -->
+    <div class="background-layer">
+      <div class="bg-gradient"></div>
+      <div class="glow-orb glow-orb-1" #glowOrb1></div>
+      <div class="glow-orb glow-orb-2" #glowOrb2></div>
+      <div class="smoke-overlay"></div>
+    </div>
+
+    <!-- Center stage: Dynamic luxury text coming from the TypeScript 'backend' -->
+    <div class="title-container">
+      <span class="luxury-subtitle" #luxurySubtitle>MAISON DE PARFUM</span>
+      <h1 class="luxury-title" #luxuryTitle>{{ brandText }}</h1>
+    </div>
+
+    <!-- Luxurious Perfume Bottle with Separate Lid for realistic opening -->
+    <div class="bottle-container" #bottleContainer>
+      <!-- Background image that zooms in when bottle arrives on the right -->
+      <img src="assets/bottle-background.webp" alt="" class="bottle-bg-image" #bottleBgImage aria-hidden="true" />
+      <!-- Closed Bottle Image (used during rise) -->
+      <img src="assets/perfume-bottle.webp" alt="Lumiere Luxury Perfume Closed" class="perfume-bottle closed-bottle"
+        #closedBottle />
+      <!-- Bottle Body Layer -->
+      <img src="assets/bottle.webp" alt="Lumiere Luxury Perfume Body" class="perfume-bottle bottle-body" #bottleBody />
+      <!-- Luxurious Floating Text (revealed when lid opens) -->
+      <div class="revealed-brand-wrap" #revealedBrand>
+        <span class="revealed-sub">HEAVENLY COLLECTION</span>
+        <span class="revealed-main">WHERE FRAGRANCE BECOMES MEMORY</span>
+      </div>
+      <!-- Lid/Cap Layer -->
+      <img src="assets/perfume-lid.webp" alt="Lumiere Luxury Perfume Lid" class="perfume-bottle bottle-lid"
+        #bottleLid />
+
+      <!-- ✦ Luxury Visual Effects – Smoke, Light & Glow ✦ -->
+      <div class="bottle-effects" #bottleEffects>
+        <!-- Cinematic spotlight light cone from top -->
+        <div class="light-cone"></div>
+        <!-- Ambient halo glow ring around bottle base -->
+        <div class="bottle-halo"></div>
+        <!-- Base pedestal glow reflection -->
+        <div class="bottle-base-glow"></div>
+        <!-- Rising smoke wisps (staggered timings for organic feel) -->
+        <div class="smoke-wisp smoke-wisp-1"></div>
+        <div class="smoke-wisp smoke-wisp-2"></div>
+        <div class="smoke-wisp smoke-wisp-3"></div>
+        <div class="smoke-wisp smoke-wisp-4"></div>
+        <div class="smoke-wisp smoke-wisp-5"></div>
+      </div>
+    </div>
+
+    <!-- Left-Side Luxury Cinematic Hero Content (Dior & Tom Ford Inspired) -->
+    <div class="left-hero-content" #leftHeroContent>
+      <span class="hero-pre-title">THE BEST</span>
+      <h2 class="hero-main-title">AROMA</h2>
+      <span class="hero-post-title">FOR YOU</span>
+      <a routerLink="/shop" class="hero-btn" id="heroShopNowBtn">
+        <span class="btn-text">SHOP NOW</span>
+        <span class="btn-glow"></span>
+      </a>
+    </div>
+
+    <!-- Scroll-to-Shop Hint (appears after intro, fades in via GSAP) -->
+    <div class="scroll-to-shop-hint" aria-hidden="true">
+      <span class="scroll-hint-text">SCROLL TO DISCOVER THE COLLECTION</span>
+      <div class="scroll-hint-line">
+        <div class="scroll-hint-dot"></div>
+      </div>
+      <span class="scroll-hint-arrow">↓</span>
+    </div>
+
+  </div>
+
+  <!-- Full-screen black exit curtain (animated by GSAP on scroll transition) -->
+  <div class="page-exit-curtain" aria-hidden="true"></div>
+</div>

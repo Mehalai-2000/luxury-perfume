@@ -1,0 +1,160 @@
+<section id="contact-section" class="embedded-contact-section" aria-label="Contact Us Heritage">
+
+    <!-- Title Header -->
+    <div class="embedded-contact-header">
+        <span class="contact-tag">✦ PRIVATE ATELIER ✦</span>
+        <h2 class="contact-title">Contact Us</h2>
+        <div class="gold-divider"></div>
+        <p class="contact-intro">Connect with our olfactory specialists for bespoke inquiries and collections</p>
+    </div>
+
+    <!-- Two-Column Luxury Split Layout -->
+    <div class="contact-split-layout">
+
+        <!-- Left Column: Glassmorphic Floating Label Contact Form -->
+        <div class="form-column" aria-label="Send a message">
+            <div class="form-card-wrap">
+                <div class="card-glow"></div>
+                <div class="form-card-content">
+                    <h3 class="form-header-title">Send a Message</h3>
+                    <p class="form-header-subtitle">Our response window is typically within 12 boutique hours.</p>
+
+                    <form (submit)="submitContactForm($event)" class="luxury-contact-form" novalidate>
+
+                        <!-- Name Input Field -->
+                        <div class="form-group" [class.focused]="contactFocusedField === 'name'">
+                            <input type="text" id="contact-name" name="name" [(ngModel)]="contactData.name"
+                                (focus)="setContactFocus('name')" (blur)="clearContactFocus()" required
+                                autocomplete="name" class="luxury-input" placeholder="Full Name" />
+                            <div class="focus-indicator-line"></div>
+                        </div>
+
+                        <!-- Email Input Field -->
+                        <div class="form-group" [class.focused]="contactFocusedField === 'email'">
+                            <input type="email" id="contact-email" name="email" [(ngModel)]="contactData.email"
+                                (focus)="setContactFocus('email')" (blur)="clearContactFocus()" required
+                                autocomplete="email" class="luxury-input" placeholder="Email Address" />
+                            <div class="focus-indicator-line"></div>
+                        </div>
+
+                        <!-- Custom Dropdown Selector for Inquiry Types -->
+                        <div class="form-group dropdown-group" [class.focused]="contactFocusedField === 'inquiry'">
+                            <div class="select-wrapper">
+                                <select id="contact-inquiry" name="inquiryType" [(ngModel)]="contactData.inquiryType"
+                                    (focus)="setContactFocus('inquiry')" (blur)="clearContactFocus()" required
+                                    class="luxury-select">
+                                    <option value="atelier">Bespoke Scent Consultation</option>
+                                    <option value="order">Order Tracking &amp; Distribution</option>
+                                    <option value="refill">Flacon Refill Initiative</option>
+                                    <option value="press">Press &amp; Strategic Partnerships</option>
+                                </select>
+                                <div class="custom-select-arrow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.5" class="arrow-svg">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="focus-indicator-line"></div>
+                        </div>
+
+                        <!-- Message Textarea Field -->
+                        <div class="form-group message-group" [class.focused]="contactFocusedField === 'message'">
+                            <textarea id="contact-message" name="message" [(ngModel)]="contactData.message"
+                                (focus)="setContactFocus('message')" (blur)="clearContactFocus()" required rows="5"
+                                class="luxury-textarea" placeholder="Your Message"></textarea>
+                            <div class="focus-indicator-line"></div>
+                        </div>
+
+                        <!-- Submit Action -->
+                        <button type="submit" class="contact-submit-btn" [class.submitting]="isContactSubmitting"
+                            [disabled]="isContactSubmitting || !contactData.name || !contactData.email || !contactData.message">
+
+                            <span class="btn-spinner" *ngIf="isContactSubmitting"></span>
+                            <span class="btn-text" *ngIf="!isContactSubmitting">Transmit Inquiry</span>
+                            <span class="btn-text" *ngIf="isContactSubmitting">Transmitting...</span>
+                            <span class="btn-glow"></span>
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Gold Framed High-Fidelity Luxury Marketing Showcase -->
+        <div class="image-column" aria-label="Olfactory visual showcase">
+            <div class="image-frame-container">
+
+                <!-- Breathing Dual Gold Layered Frames -->
+                <div class="outer-gold-frame">
+                    <div class="inner-gold-frame">
+                        <div class="glass-overlay"></div>
+
+                        <!-- High Fidelity Luxury Marketing Image -->
+                        <img src="assets/men-perfume.webp"
+                            alt="Premium studio visual of an exquisite crystal bottle of Mystique Aroma perfume perched elegantly on white-veined black marble, back-lit by warm golden dawn rays"
+                            class="luxury-visual" />
+
+                        <!-- Accent details -->
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                </div>
+
+                <div class="showcase-caption">
+                    <span class="caption-tag">MAISON DE PARFUM</span>
+                    <span class="caption-title">Lumière Noir Extrait</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Luxury Success Dialogue Box -->
+<div class="success-modal-backdrop" *ngIf="showContactSuccessModal" (click)="closeContactSuccessModal()">
+    <div class="success-modal-content" (click)="$event.stopPropagation()">
+        <button class="modal-close-btn" (click)="closeContactSuccessModal()"
+            aria-label="Close success details">✕</button>
+
+        <!-- Gold Wax Seal Motif -->
+        <div class="success-seal-container">
+            <div class="success-seal">
+                <svg viewBox="0 0 100 100" class="modal-seal-svg">
+                    <circle cx="50" cy="50" r="46" class="outer-seal-ring" fill="none" stroke="currentColor"
+                        stroke-dasharray="3 3"></circle>
+                    <path d="M50,15 L78,35 L78,65 L50,85 L22,65 L22,35 Z" class="inner-seal-shield" fill="none"
+                        stroke="currentColor" stroke-width="2"></path>
+                    <circle cx="50" cy="50" r="16" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path d="M44,48 L56,48 M50,42 L50,58" stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+                <div class="seal-glow"></div>
+            </div>
+        </div>
+
+        <div class="modal-body-section">
+            <span class="success-alert-tag">INQUIRY RECEIVED</span>
+            <h3 class="success-alert-title">Inquiry Successfully Transmitted</h3>
+            <div class="modal-divider"></div>
+
+            <p class="success-alert-message">
+                Dear {{ contactData.name }}, thank you for contacting the Mystique Aroma Private Atelier.
+            </p>
+            <p class="success-alert-submessage">
+                A dedicated fragrance specialist has been assigned to your inquiry and will contact you shortly at
+                <strong>{{
+                    contactData.email }}</strong>. A confirmation scroll has been dispatched to your inbox.
+            </p>
+
+            <button class="modal-confirm-btn" (click)="closeContactSuccessModal()">
+                <span>Return to Boutique</span>
+                <span class="btn-glow"></span>
+            </button>
+        </div>
+
+    </div>
+</div>

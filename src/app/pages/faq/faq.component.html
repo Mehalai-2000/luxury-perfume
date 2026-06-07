@@ -1,0 +1,66 @@
+<section id="faq-section" class="faq-section" aria-label="FAQ Heritage">
+    <!-- Background Particles -->
+    <div class="faq-ambient-wrap">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="faq-particle" [class]="'p' + i"></div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="faq-header">
+        <div class="faq-header-content">
+            <span class="faq-tag">✧ CLARITY & INSIGHT ✧</span>
+            <h2 class="faq-title">Curated Knowledge</h2>
+            <div class="gold-line"></div>
+            <p class="faq-subtitle">The technical artistry behind every crystalline drop.</p>
+        </div>
+    </div>
+
+    <div class="faq-container">
+        <!-- Decor side (cinematic image) -->
+        <div class="faq-visual-side">
+            <div class="visual-image-container">
+                <img src="assets/woman-perfume.webp" alt="Luxury perfume heritage" class="cinematic-faq-img">
+                <div class="image-overlay-glow"></div>
+            </div>
+            <!-- <div class="luxury-quote">
+                <span class="quote-mark">“</span>
+                <p>A fragrance is not just a scent, it is an answered prayer to the senses.</p>
+                <span class="quote-author">— THE ATELIER</span>
+            </div> -->
+        </div>
+
+        <!-- Accordion List -->
+        <div class="faq-list">
+            <div *ngFor="let item of faqItems; let i = index" class="faq-item-card"
+                [class.active]="faqActiveId === item.id">
+
+                <button class="faq-trigger" (click)="toggleFaq(item.id)" [attr.aria-expanded]="faqActiveId === item.id">
+                    <div class="faq-number">0{{ i + 1 }}</div>
+                    <div class="faq-text-content">
+                        <span class="faq-category">{{ item.category }}</span>
+                        <h3 class="faq-question">{{ item.question }}</h3>
+                    </div>
+
+                    <div class="faq-icon-wrap">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+                                class="plus-svg">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </div>
+                    </div>
+                </button>
+
+                <div class="faq-answer-container" [class.show]="faqActiveId === item.id">
+                    <div class="faq-answer-inner">
+                        <div class="answer-divider"></div>
+                        <p class="faq-answer-text">{{ item.answer }}</p>
+                        <div class="answer-footer">
+                            <span class="footer-hint">DISCOVER THE CRAFT ✦</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
