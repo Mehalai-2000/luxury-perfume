@@ -24,7 +24,7 @@
 
   <!-- Far Right: Circular Translucent Shopping Bag/Cart Icon -->
   <div class="navbar-right">
-    <button class="cart-btn" aria-label="Shopping Cart">
+    <button class="cart-btn" aria-label="Shopping Cart" (click)="navigateToCart()">
       <!-- Minimalist elegant luxury cart/bag icon (SVG) -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
         stroke-linecap="round" stroke-linejoin="round" class="cart-icon">
@@ -32,7 +32,7 @@
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <path d="M16 10a4 4 0 0 1-8 0"></path>
       </svg>
-      <span class="cart-badge">1</span>
+      <span class="cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
     </button>
   </div>
 </nav>

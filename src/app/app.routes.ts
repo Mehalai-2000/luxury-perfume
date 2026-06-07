@@ -8,5 +8,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/shop/shop.component').then(m => m.ShopComponent)
   },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then(m => m.CartComponent)
+  },
   { path: '**', redirectTo: '' }
 ];

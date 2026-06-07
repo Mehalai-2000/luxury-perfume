@@ -5,26 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { AboutComponent } from '../about/about.component';
 import { FaqComponent } from '../faq/faq.component';
 import { ContactComponent } from '../contact/contact.component';
+import { Perfume } from '../../models/perfume.model';
+import { CartService } from '../../services/cart.service';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Subscription } from 'rxjs';
 
 gsap.registerPlugin(ScrollTrigger);
-
-export interface Perfume {
-  id: number;
-  name: string;
-  subtitle: string;
-  price: number;
-  size: string;
-  category: string;
-  badge?: string;
-  description: string;
-  notes: string[];
-  image: string;
-  inCart: boolean;
-  quantity: number;
-  inWishlist?: boolean;
-}
 
 export interface FaqItem {
   id: number;
@@ -44,6 +31,8 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
 
   activeFilter: string = 'all';
   cartCount: number = 0;
+  cartItems: Perfume[] = [];
+  cartTotal: number = 0;
   cartVisible: boolean = false;
   addedToCartId: number | null = null;
   hoveredId: number | null = null;
@@ -55,6 +44,7 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
   // FAQ active item state
   faqActiveId: number | null = null;
 
+  private cartSub?: Subscription;
   private gsapContext?: gsap.Context;
 
   // Scroll-back state
@@ -164,15 +154,11 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.products.filter(p => p.category === this.activeFilter);
   }
 
-  get cartItems(): Perfume[] {
-    return this.products.filter(p => p.inCart);
-  }
-
-  get cartTotal(): number {
-    return this.cartItems.reduce((sum, p) => sum + p.price * p.quantity, 0);
-  }
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
+    private cartService: CartService
+  ) { }
 
   get maxStartIndex(): number {
     return Math.max(0, this.filteredProducts.length - this.cardsPerPage);
@@ -225,6 +211,11 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.updateCardsPerPage();
     }
+    this.cartSub = this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
+      this.cartCount = items.reduce((acc, i) => acc + i.quantity, 0);
+      this.cartTotal = items.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -246,6 +237,7 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.touchStartListener) window.removeEventListener('touchstart', this.touchStartListener);
       if (this.touchMoveListener) window.removeEventListener('touchmove', this.touchMoveListener);
     }
+    if (this.cartSub) this.cartSub.unsubscribe();
   }
 
   setFilter(filter: string): void {
@@ -259,17 +251,13 @@ export class ShopComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addToCart(product: Perfume, event: Event): void {
     event.stopPropagation();
-    product.inCart = true;
-    product.quantity = product.quantity > 0 ? product.quantity + 1 : 1;
-    this.cartCount = this.cartItems.reduce((s, p) => s + p.quantity, 0);
+    this.cartService.addToCart(product);
     this.addedToCartId = product.id;
     setTimeout(() => (this.addedToCartId = null), 1800);
   }
 
   removeFromCart(product: Perfume): void {
-    product.inCart = false;
-    product.quantity = 0;
-    this.cartCount = this.cartItems.reduce((s, p) => s + p.quantity, 0);
+    this.cartService.removeFromCart(product.id);
   }
 
   toggleCart(): void {

@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -11,8 +13,15 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   isScrolled = false;
+  cartCount$: Observable<number>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cartService: CartService,
+    private router: Router
+  ) {
+    this.cartCount$ = this.cartService.cartCount$;
+  }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -30,5 +39,9 @@ export class NavbarComponent implements OnInit {
   private checkScroll(): void {
     const scrollY = window.scrollY || document.documentElement.scrollTop;
     this.isScrolled = scrollY > 10;
+  }
+
+  navigateToCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

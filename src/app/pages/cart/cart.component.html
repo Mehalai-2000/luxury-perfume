@@ -1,0 +1,91 @@
+<div class="cart-page">
+    <div class="cart-bg"></div>
+
+    <section class="cart-section">
+        <div class="cart-container">
+            <header class="cart-header">
+                <div class="header-top">
+                    <a routerLink="/shop" class="back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" class="back-icon">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        CONTINUE SHOPPING
+                    </a>
+                    <h1 class="cart-title">YOUR COLLECTION</h1>
+                    <div class="spacer"></div>
+                </div>
+                <div class="cart-divider"></div>
+            </header>
+
+            <div class="cart-content" *ngIf="cartItems.length > 0; else emptyCart">
+                <div class="cart-items-list">
+                    <article class="cart-item" *ngFor="let item of cartItems">
+                        <div class="item-visual">
+                            <img [src]="item.image" [alt]="item.name" class="item-img" />
+                        </div>
+                        <div class="item-details">
+                            <div class="item-main">
+                                <h2 class="item-name">{{ item.name }}</h2>
+                                <p class="item-subtitle">{{ item.subtitle }} · {{ item.size }}</p>
+                            </div>
+                            <div class="item-controls">
+                                <div class="quantity-picker">
+                                    <button class="qty-btn" (click)="updateQuantity(item.id, -1)"
+                                        [disabled]="item.quantity <= 1">－</button>
+                                    <span class="qty-val">{{ item.quantity }}</span>
+                                    <button class="qty-btn" (click)="updateQuantity(item.id, 1)">＋</button>
+                                </div>
+                                <button class="remove-btn" (click)="removeItem(item.id)">REMOVE</button>
+                            </div>
+                        </div>
+                        <div class="item-price-total">
+                            <span class="item-price">${{ item.price * item.quantity }}</span>
+                        </div>
+                    </article>
+                </div>
+
+                <aside class="cart-summary">
+                    <div class="summary-card">
+                        <h3 class="summary-title">SUMMARY</h3>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>${{ cartTotal }}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span class="free">COMPLIMENTARY</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row total">
+                            <span>TOTAL</span>
+                            <span>${{ cartTotal }}</span>
+                        </div>
+                        <button class="checkout-btn" (click)="checkout()">
+                            PROCEED TO SECURE CHECKOUT
+                            <span class="btn-glow"></span>
+                        </button>
+                        <p class="summary-note">Standard shipping: 2-4 business days.</p>
+                    </div>
+                </aside>
+            </div>
+
+            <ng-template #emptyCart>
+                <div class="cart-empty-state">
+                    <span class="empty-icon">✦</span>
+                    <p class="empty-msg">Your collection is currently empty.</p>
+                    <a routerLink="/shop" class="shop-btn">EXPLORE THE BOUTIQUE</a>
+                </div>
+            </ng-template>
+        </div>
+    </section>
+
+    <footer class="cart-footer">
+        <div class="footer-ornament">✦</div>
+        <p class="footer-tagline">MYSTIQUE AROMA · EST. MMXXV · MAISON DE PARFUM</p>
+        <p class="footer-github">Curated by <a href="https://github.com/Mehalai-2000" target="_blank">Mehalai-2000</a>
+        </p>
+        <div class="footer-ornament">✦</div>
+    </footer>
+</div>

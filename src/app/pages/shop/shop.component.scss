@@ -1332,3 +1332,57 @@ $white: #ffffff;
     transform: translateX(-50%) translateY(-3px);
   }
 }
+
+
+.shop-footer {
+  padding: 80px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid rgba(223, 193, 147, 0.14);
+}
+
+.footer-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-ornament {
+  color: #dfc193;
+  opacity: 0.6;
+  font-size: 1.2rem;
+}
+
+.footer-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.45em;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.footer-github {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+  
+  a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s ease;
+    
+    &:hover {
+      color: #dfc193;
+      border-bottom-color: rgba(223, 193, 147, 0.5);
+    }
+  }
+}
+
